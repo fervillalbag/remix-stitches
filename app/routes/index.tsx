@@ -1,32 +1,23 @@
+import { styled } from "@stitches/react";
+
+const Container = styled("div", {
+  display: "flex",
+  justifyContent: "center"
+})
+
+const Button = styled("button", {
+  backgroundColor: "rebeccapurple",
+  padding: "0.5rem 1.5rem",
+  border: 0,
+  fontSize: 20,
+  borderRadius: 3,
+  color: "white"
+})
+
 export default function Index() {
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-      <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/blog"
-            rel="noreferrer"
-          >
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/jokes"
-            rel="noreferrer"
-          >
-            Deep Dive Jokes App Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
-      </ul>
-    </div>
+    <Container>
+      <Button>Hello world from remix with stitches</Button>
+    </Container>
   );
 }
