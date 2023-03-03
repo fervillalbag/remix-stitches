@@ -7,6 +7,20 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { globalCss } from "@stitches/react";
+import { useContext, useEffect } from "react";
+import { reset } from "stitches-reset"
+
+import ClientStyleContext from "~/styles/client.context";
+import { styled } from "~/styles/stitches.config";
+
+const Container = styled("div", {
+  backgroundColor: "#ff0000",
+  padding: "1em"
+})
+
+const globalStyles = globalCss(reset);
+globalStyles();
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -14,19 +28,53 @@ export const meta: MetaFunction = () => ({
   viewport: "width=device-width,initial-scale=1",
 });
 
-export default function App() {
+interface IDocument {
+  children: React.ReactNode;
+  title?: string;
+}
+
+function Document({ children, title }: IDocument) {
+  const clientStyleData = useContext(ClientStyleContext);
+
+  useEffect(() => {
+    clientStyleData.reset();
+  }, [clientStyleData]);
+  
   return (
     <html lang="en">
       <head>
         <Meta />
         <Links />
+        <style
+          id="stitches"
+          dangerouslySetInnerHTML={{ __html: clientStyleData.sheet }}
+          suppressHydrationWarning
+        />
       </head>
       <body>
-        <Outlet />
+        {children}
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
       </body>
     </html>
+  );
+}
+
+export default function App() {
+  return (
+    <Document>
+      <Outlet />
+    </Document>
+  );
+}
+
+export function ErrorBoundary({ error }: {error: Error}) {
+  return (
+    <Document title="Error!">
+      <Container>
+        <p>[ErrorBoundary]: There was an error: {error.message}</p>
+      </Container>
+    </Document>
   );
 }
