@@ -1,3 +1,4 @@
+import { useContext, useEffect } from "react";
 import type { MetaFunction } from "@remix-run/node";
 import {
   Links,
@@ -8,7 +9,6 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import { globalCss } from "@stitches/react";
-import { useContext, useEffect } from "react";
 import { reset } from "stitches-reset"
 
 import ClientStyleContext from "~/styles/client.context";
@@ -19,7 +19,10 @@ const Container = styled("div", {
   padding: "1em"
 })
 
-const globalStyles = globalCss(reset);
+const globalStyles = globalCss({
+  ...reset,
+  body: { fontFamily: "Raleway" },
+});
 globalStyles();
 
 export const meta: MetaFunction = () => ({
@@ -45,6 +48,7 @@ function Document({ children, title }: IDocument) {
       <head>
         <Meta />
         <Links />
+        {title && <title>{title}</title>}
         <style
           id="stitches"
           dangerouslySetInnerHTML={{ __html: clientStyleData.sheet }}
@@ -77,4 +81,13 @@ export function ErrorBoundary({ error }: {error: Error}) {
       </Container>
     </Document>
   );
+}
+
+export function links() {
+  return [
+    {
+      rel: "stylesheet",
+      href: "https://fonts.googleapis.com/css2?family=Raleway&display=swap",
+    },
+  ];
 }
